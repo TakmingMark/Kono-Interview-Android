@@ -6,7 +6,7 @@ import okhttp3.HttpUrl
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
+import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
@@ -27,7 +27,7 @@ class KonoRetrofit {
             .Builder()
             .baseUrl(getHttpUrl())
             .addConverterFactory(getGsonConverterFactory())
-            .addCallAdapterFactory(getRxJava2CallAdapterFactory())
+            .addCallAdapterFactory(getRxJava3CallAdapterFactory())
             .client(getOkHttpClient())
             .build()
             .create(KonoRetrofitService::class.java)
@@ -44,8 +44,8 @@ class KonoRetrofit {
         return GsonConverterFactory.create(Gson())
     }
 
-    private fun getRxJava2CallAdapterFactory(): RxJava2CallAdapterFactory {
-        return RxJava2CallAdapterFactory.create()
+    private fun getRxJava3CallAdapterFactory(): RxJava3CallAdapterFactory {
+        return RxJava3CallAdapterFactory.create()
     }
 
     private fun getOkHttpClient(): OkHttpClient {

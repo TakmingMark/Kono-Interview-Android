@@ -44,6 +44,9 @@ android {
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 
+    //Import module
+    implementation project(path: ':konosdk')
+
     // Base
     implementation rootProject.ext.dependencies.androidxCoreKtx
     implementation rootProject.ext.dependencies.androidxAppcompat
@@ -91,4 +94,12 @@ dependencies {
 
     // Android permission
     implementation rootProject.ext.dependencies.rxPermissions
+
+    // API request
+    implementation rootProject.ext.dependencies.retrofit2
+    implementation rootProject.ext.dependencies.retrofit2ConverterGson
+    implementation rootProject.ext.dependencies.retrofit2AdapterRxjav3
+    implementation rootProject.ext.dependencies.okhttp3
+    implementation rootProject.ext.dependencies.okhttp3LoggingInterceptor
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
 }

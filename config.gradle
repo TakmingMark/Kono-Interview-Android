@@ -2,7 +2,7 @@ ext {
 
     android = [
             compileSdkVersion: 30,
-            applicationId    : "com.koin.remote_interview_android",
+            applicationId    : "com.kono.remote_interview_android",
             minSdkVersion    : 21,
             targetSdkVersion : 30,
 
@@ -10,9 +10,10 @@ ext {
             versionCode      : 1,
             versionName      : "0.0.1",
 
-            // Dongle sdk
-            DongleVersionCode: 1,
-            DongleVersionName: "0.0.1",
+            // Kono sdk
+            KonoSdkLibraryId  : "com.kono.konosdk",
+            KonoSdkVersionCode: 1,
+            KonoSdkVersionName: "0.0.1",
     ]
 
     version = [
@@ -94,7 +95,7 @@ ext {
             // API request
             "retrofit2"                     : "com.squareup.retrofit2:retrofit:${version["retrofitVersion"]}",
             "retrofit2ConverterGson"        : "com.squareup.retrofit2:converter-gson:${version["retrofitVersion"]}",
-            "retrofit2AdapterRxjav2"        : "com.squareup.retrofit2:adapter-rxjava2:${version["retrofitVersion"]}",
+            "retrofit2AdapterRxjav3"        : "com.squareup.retrofit2:adapter-rxjava3:${version["retrofitVersion"]}",
             "okhttp3"                       : "com.squareup.okhttp3:okhttp:${version["okhttp3Version"]}",
             "okhttp3LoggingInterceptor"     : "com.squareup.okhttp3:logging-interceptor:${version["okhttp3Version"]}",
     ]

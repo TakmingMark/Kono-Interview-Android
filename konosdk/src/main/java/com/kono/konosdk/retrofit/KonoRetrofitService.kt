@@ -13,7 +13,7 @@ interface KonoRetrofitService {
         private const val PATH_PROJECTS = "projects"
         private const val PATH_USER_ID = "5f869aed6f3848deb4632d35" //I not sure
         private const val PATH_FOLDERS = "folders"
-        private const val PATH_ARTICLES_ID = "5f869e" // I no sure
+        private const val PATH_ARTICLES_ID = "5f869ead6f38484d15632d51" // I no sure
     }
 
     @GET("$SERVICE_PLATFORM/$SERVICE_API/$SERVICE_VERSION/$PATH_PROJECTS/$PATH_USER_ID/$PATH_FOLDERS/$PATH_ARTICLES_ID")
