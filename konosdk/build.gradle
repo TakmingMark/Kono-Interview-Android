@@ -1,0 +1,63 @@
+plugins {
+    id 'com.android.library'
+    id 'kotlin-android'
+}
+
+android {
+    compileSdkVersion rootProject.ext.android["compileSdkVersion"]
+
+    defaultConfig {
+        applicationId  rootProject.ext.android["applicationId"]
+        minSdkVersion  rootProject.ext.android["minSdkVersion"]
+        targetSdkVersion  rootProject.ext.android["targetSdkVersion"]
+        versionCode  rootProject.ext.android["DongleVersionCode"]
+        versionName  rootProject.ext.android["DongleVersionName"]
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+}
+
+dependencies {
+
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    // Base
+    implementation rootProject.ext.dependencies.androidxCoreKtx
+    implementation rootProject.ext.dependencies.androidxAppcompat
+    implementation rootProject.ext.dependencies.material
+    implementation rootProject.ext.dependencies.androidxConstraintlayout
+    implementation rootProject.ext.dependencies.junit
+    implementation rootProject.ext.dependencies.androidxJunit
+    implementation rootProject.ext.dependencies.androidxEspressoCore
+
+    // RxJava3
+    implementation rootProject.ext.dependencies.rxandroid3
+    implementation rootProject.ext.dependencies.rxjava3
+
+    //Debug
+    implementation rootProject.ext.dependencies.timber
+
+    // Parse Json
+    implementation rootProject.ext.dependencies.gson
+
+    // API request
+    implementation rootProject.ext.dependencies.retrofit2
+    implementation rootProject.ext.dependencies.retrofit2ConverterGson
+    implementation rootProject.ext.dependencies.retrofit2AdapterRxjav2
+    implementation rootProject.ext.dependencies.okhttp3
+    implementation rootProject.ext.dependencies.okhttp3LoggingInterceptor
+}
