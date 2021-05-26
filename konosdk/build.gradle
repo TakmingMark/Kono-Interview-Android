@@ -60,4 +60,8 @@ dependencies {
     implementation rootProject.ext.dependencies.retrofit2AdapterRxjav2
     implementation rootProject.ext.dependencies.okhttp3
     implementation rootProject.ext.dependencies.okhttp3LoggingInterceptor
+
+    // DI
+    implementation rootProject.ext.dependencies.koinAndroid
+    implementation rootProject.ext.dependencies.koinAndroidExt
 }

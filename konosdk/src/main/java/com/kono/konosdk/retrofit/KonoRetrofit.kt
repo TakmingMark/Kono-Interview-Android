@@ -13,7 +13,7 @@ import java.util.concurrent.TimeUnit
 class KonoRetrofit {
     companion object {
         private const val HTTP_SCHEME = "https"
-        private const val BASE_URL = ""
+        private const val BASE_URL = "kps-server-ojx42ulvaa-uc.a.run.app"
         private const val USER_AGENT = "interviewer_user_agent"
         private const val TIME_OUT = 10L
     }
