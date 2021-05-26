@@ -1,2 +1,3 @@
 rootProject.name = "Kono-Interview-Android"
 include ':app'
+include ':konosdk'

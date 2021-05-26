@@ -9,6 +9,10 @@ ext {
             // app
             versionCode      : 1,
             versionName      : "0.0.1",
+
+            // Dongle sdk
+            DongleVersionCode: 1,
+            DongleVersionName: "0.0.1",
     ]
 
     version = [
@@ -29,7 +33,9 @@ ext {
             androidXAnnotationsVersion    : "1.2.0",
             rxJava3Version                : "3.0.0",
             koinVersion                   : "3.0.2",
-            glideVersion                  : "4.12.0"
+            glideVersion                  : "4.12.0",
+            retrofitVersion               : "2.9.0",
+            okhttp3Version                : "4.2.0"
     ]
 
     dependencies = [
@@ -84,6 +90,13 @@ ext {
 
             // Android permission
             "rxPermissions"                : "com.github.tbruyelle:rxpermissions:0.12",
+
+            // API request
+            "retrofit2"                     : "com.squareup.retrofit2:retrofit:${version["retrofitVersion"]}",
+            "retrofit2ConverterGson"        : "com.squareup.retrofit2:converter-gson:${version["retrofitVersion"]}",
+            "retrofit2AdapterRxjav2"        : "com.squareup.retrofit2:adapter-rxjava2:${version["retrofitVersion"]}",
+            "okhttp3"                       : "com.squareup.okhttp3:okhttp:${version["okhttp3Version"]}",
+            "okhttp3LoggingInterceptor"     : "com.squareup.okhttp3:logging-interceptor:${version["okhttp3Version"]}",
     ]
 }
 
