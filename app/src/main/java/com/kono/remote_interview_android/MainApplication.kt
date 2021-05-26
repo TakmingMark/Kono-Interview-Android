@@ -2,6 +2,7 @@ package com.kono.remote_interview_android
 
 import android.app.Application
 import com.kono.konosdk.di.konoSdkModule
+import com.kono.remote_interview_android.di.applicationModule
 import com.kono.remote_interview_android.di.viewModelModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
@@ -24,6 +25,7 @@ class MainApplication : Application() {
             androidContext(this@MainApplication)
             androidLogger()
             modules(
+                applicationModule,
                 konoSdkModule,
                 viewModelModule
             )
