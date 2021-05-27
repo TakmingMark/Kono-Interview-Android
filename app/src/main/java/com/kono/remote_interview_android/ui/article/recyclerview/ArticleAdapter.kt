@@ -1,6 +1,7 @@
 package com.kono.remote_interview_android.ui.article.recyclerview
 
 import android.content.Context
+import android.content.res.Configuration
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
@@ -44,14 +45,6 @@ class ArticleAdapter(private val urlHelper: UrlHelper, private val bitmapHelper:
             }
             ArticleType.PART.ordinal -> {
                 AdapterArticlePartBinding.inflate(LayoutInflater.from(context), parent, false)
-                    .apply {
-                        //TODO I don't want using viewTreeObserver, because it's easy happened OOM, but still can't found other way to replace it right now.
-                        this.contentTextView.viewTreeObserver.addOnGlobalLayoutListener {
-                            val maxLines =
-                                this.contentTextView.height / this.contentTextView.lineHeight
-                            this.contentTextView.maxLines = maxLines
-                        }
-                    }
             }
             else -> {
                 AdapterArticlePartBinding.inflate(LayoutInflater.from(context), parent, false)
@@ -123,10 +116,19 @@ class ArticleAdapter(private val urlHelper: UrlHelper, private val bitmapHelper:
             .asBitmap()
             .thumbnail(0.3f)
             .load(bigThumbnailKonoUrl)
-            .centerCrop()
+            .fitCenter()
             .into(object : CustomTarget<Bitmap>() {
                 override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
                     val cutBitmap = bitmapHelper.cutBitmap(resource, 1.0, 0.4)
+                    when (context!!.resources.configuration.orientation) {
+                        Configuration.ORIENTATION_LANDSCAPE -> {
+                            imageView.scaleType = ImageView.ScaleType.CENTER_CROP
+                        }
+                        Configuration.ORIENTATION_PORTRAIT -> {
+                            imageView.scaleType = ImageView.ScaleType.FIT_CENTER
+                        }
+                    }
+
                     imageView.setImageBitmap(cutBitmap)
                 }
 
