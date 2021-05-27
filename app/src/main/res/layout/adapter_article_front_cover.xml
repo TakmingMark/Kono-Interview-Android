@@ -48,7 +48,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Content"
-                android:textColor="#A6A6A6"
+                android:textColor="#C3AB89"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="@id/title_text_view"
                 app:layout_constraintTop_toBottomOf="@id/title_text_view" />
