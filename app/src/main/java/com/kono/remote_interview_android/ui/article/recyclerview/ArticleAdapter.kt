@@ -1,18 +1,24 @@
 package com.kono.remote_interview_android.ui.article.recyclerview
 
 import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.target.CustomTarget
+import com.bumptech.glide.request.transition.Transition
 import com.kono.konosdk.data.Articles
 import com.kono.remote_interview_android.databinding.AdapterArticleFrontCoverBinding
 import com.kono.remote_interview_android.databinding.AdapterArticlePartBinding
+import com.kono.remote_interview_android.helper.BitmapHelper
 import com.kono.remote_interview_android.helper.UrlHelper
+import timber.log.Timber
 
-class ArticleAdapter(private val urlHelper: UrlHelper) :
+class ArticleAdapter(private val urlHelper: UrlHelper, private val bitmapHelper: BitmapHelper) :
     RecyclerView.Adapter<ArticleAdapter.ViewHolder>() {
     companion object {
         private const val FRONT_COVER_INDEX = 0
@@ -22,7 +28,9 @@ class ArticleAdapter(private val urlHelper: UrlHelper) :
     private val items = ArrayList<Articles.Child>()
     fun setItems(articles: Articles) {
         items.clear()
-        items.addAll(articles.children)
+        items.addAll(articles.children.sortedBy { child ->
+            child.orderInParent
+        })
         notifyDataSetChanged()
     }
 
@@ -36,6 +44,14 @@ class ArticleAdapter(private val urlHelper: UrlHelper) :
             }
             ArticleType.PART.ordinal -> {
                 AdapterArticlePartBinding.inflate(LayoutInflater.from(context), parent, false)
+                    .apply {
+                        //TODO I don't want using viewTreeObserver, because it's easy happened OOM, but still can't found other way to replace it right now.
+                        this.contentTextView.viewTreeObserver.addOnGlobalLayoutListener {
+                            val maxLines =
+                                this.contentTextView.height / this.contentTextView.lineHeight
+                            this.contentTextView.maxLines = maxLines
+                        }
+                    }
             }
             else -> {
                 AdapterArticlePartBinding.inflate(LayoutInflater.from(context), parent, false)
@@ -57,14 +73,31 @@ class ArticleAdapter(private val urlHelper: UrlHelper) :
                     val url = item.res.image.list[0].uri
                     val smallThumbnail = item.res.image.list[0].thumbnails[0]
                     val bigThumbnail = item.res.image.list[0].thumbnails[3]
-                    val smallThumbnailKonoUrl = urlHelper.covertToKonoUrl(url, smallThumbnail)
                     val bigThumbnailKonoUrl = urlHelper.covertToKonoUrl(url, bigThumbnail)
-                    loadImageUrl(viewBinding.imageView, smallThumbnailKonoUrl, bigThumbnailKonoUrl)
-
+                    loadFrontCoverImageUrl(viewBinding.imageView, bigThumbnailKonoUrl)
                 }
             }
             ArticleType.PART.ordinal -> {
+                val viewBinding = holder.viewBinding as AdapterArticlePartBinding
+                viewBinding.titleTextView.text = item.name
+                viewBinding.contentTextView.text = item.description
 
+
+
+                Timber.d("${viewBinding.contentTextView.height}+${viewBinding.contentTextView.lineHeight}")
+                if (item.res.image.list.isNotEmpty() && item.res.image.list[0].thumbnails.size > 3) {
+                    //Uri is little weired
+                    val url = item.res.image.list[0].uri
+                    val smallThumbnail = item.res.image.list[0].thumbnails[0]
+                    val bigThumbnail = item.res.image.list[0].thumbnails[3]
+                    val smallThumbnailKonoUrl = urlHelper.covertToKonoUrl(url, smallThumbnail)
+                    val bigThumbnailKonoUrl = urlHelper.covertToKonoUrl(url, bigThumbnail)
+                    loadPartImageUrl(
+                        viewBinding.imageView,
+                        smallThumbnailKonoUrl,
+                        bigThumbnailKonoUrl
+                    )
+                }
             }
         }
     }
@@ -81,7 +114,29 @@ class ArticleAdapter(private val urlHelper: UrlHelper) :
         }
     }
 
-    private fun loadImageUrl(
+    private fun loadFrontCoverImageUrl(
+        imageView: ImageView,
+        bigThumbnailKonoUrl: String
+    ) {
+        Glide
+            .with(context!!)
+            .asBitmap()
+            .thumbnail(0.3f)
+            .load(bigThumbnailKonoUrl)
+            .centerCrop()
+            .into(object : CustomTarget<Bitmap>() {
+                override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
+                    val cutBitmap = bitmapHelper.cutBitmap(resource, 1.0, 0.4)
+                    imageView.setImageBitmap(cutBitmap)
+                }
+
+                override fun onLoadCleared(placeholder: Drawable?) {
+                }
+            })
+
+    }
+
+    private fun loadPartImageUrl(
         imageView: ImageView,
         smallThumbnailKonoUrl: String,
         bigThumbnailKonoUrl: String
@@ -89,6 +144,7 @@ class ArticleAdapter(private val urlHelper: UrlHelper) :
         Glide
             .with(context!!)
             .load(bigThumbnailKonoUrl)
+            .centerCrop()
             .thumbnail(
                 Glide.with(context!!)
                     .load(smallThumbnailKonoUrl)
