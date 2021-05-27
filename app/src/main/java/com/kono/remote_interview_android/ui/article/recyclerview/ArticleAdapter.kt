@@ -17,7 +17,6 @@ import com.kono.remote_interview_android.databinding.AdapterArticleFrontCoverBin
 import com.kono.remote_interview_android.databinding.AdapterArticlePartBinding
 import com.kono.remote_interview_android.helper.BitmapHelper
 import com.kono.remote_interview_android.helper.UrlHelper
-import timber.log.Timber
 
 class ArticleAdapter(private val urlHelper: UrlHelper, private val bitmapHelper: BitmapHelper) :
     RecyclerView.Adapter<ArticleAdapter.ViewHolder>() {
@@ -75,9 +74,14 @@ class ArticleAdapter(private val urlHelper: UrlHelper, private val bitmapHelper:
                 viewBinding.titleTextView.text = item.name
                 viewBinding.contentTextView.text = item.description
 
+                viewBinding.contentTextView.post {
+                    if (viewBinding.contentTextView.layout != null) {
+                        val maxLines =
+                            viewBinding.contentTextView.height / viewBinding.contentTextView.lineHeight
+                        viewBinding.contentTextView.maxLines = maxLines
+                    }
+                }
 
-
-                Timber.d("${viewBinding.contentTextView.height}+${viewBinding.contentTextView.lineHeight}")
                 if (item.res.image.list.isNotEmpty() && item.res.image.list[0].thumbnails.size > 3) {
                     //Uri is little weired
                     val url = item.res.image.list[0].uri
